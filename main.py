@@ -7,11 +7,13 @@ WINDOW_X_OFFSET = 0
 WINDOW_Y_OFFSET = 0
 
 TIME_ALERTS = [
-    {"time": "2:00", "alert": "Gavel One Time"},
-    {"time": "2:30", "alert": "Gavel Two Times"},
-    {"time": "2:55", "alert": "Gavel Three Times"},
-    {"time": "3:00", "alert": "Stand Up and Gavel Down"},
+    {"minute": 0, "second": 10, "message": "Gavel One Time"},
+    {"minute": 0, "second": 15, "message": "Gavel Two Times"},
+    {"minute": 2, "second": 55, "message": "Gavel Three Times"},
+    {"minute": 3, "second": 0, "message": "Stand Up and Gavel Down"},
 ]
+
+WARNING_TIME = 10
 
 
 class OverlayApp:
@@ -48,18 +50,29 @@ class OverlayApp:
         )
         title.pack()
 
+        startEndButtons = tk.Frame(startPage, bg="#2C3E50")
+        startEndButtons.pack()
+
         startButton = tk.Button(
-            startPage,
+            startEndButtons,
             text="Start Timer",
             command=lambda: (
                 self.clear_all_widgets(),
                 self.init_timer_page(),
             ),
+            font=("Bahnschrift", 15, "normal"),
         )
         startButton.pack()
 
-        exitButton = tk.Button(startPage, text="Exit", command=lambda: sys.exit())
+        exitButton = tk.Button(
+            startEndButtons,
+            text="Exit",
+            command=lambda: sys.exit(),
+            font=("Bahnschrift", 10, "normal"),
+        )
         exitButton.pack()
+
+        # startEndButtons.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
     def init_timer_page(self):
         timerPage = tk.Frame(self.root, bg="#2C3E50")
@@ -76,11 +89,11 @@ class OverlayApp:
 
         alertLabel = tk.Label(
             timerPage,
-            text="e",
+            text="",
             fg="#ECF0F1",
-            font=("Bahnschrift", 35, "normal"),
+            font=("Bahnschrift", 20, "normal"),
             bg="#2C3E50",
-            wraplength=WINDOW_WIDTH - 50,
+            wraplength=WINDOW_WIDTH - 60,
         )
         alertLabel.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
@@ -94,28 +107,30 @@ class OverlayApp:
         self.root.after(1000, self.run_timer, timeLabel, alertLabel, stopButton)
 
     def run_timer(self, timeLabel, alertLabel, stopButton):
+
+        alertLabel.config(text="")
+
         self.timer = self.timer + 1
         minutes = self.timer // 60
         seconds = self.timer % 60
         formattedTime = f"{minutes}:{seconds <= 9 and '0'+str(seconds) or seconds}"
-        # print(formattedTime)
-        # print(f"{minutes}:{seconds + 5}\n")
-        # print(self.timerStatus)
 
         timeLabel.config(text=formattedTime)
 
-        forwardedTimer = self.timer + 5
-        forwardedMinutes = forwardedTimer // 60
-        forwardedSeconds = forwardedTimer % 60
-        forwardedFormattedTime = f"{forwardedMinutes}:{forwardedSeconds <= 9 and '0'+str(forwardedSeconds) or forwardedSeconds}"
-
         for alert in TIME_ALERTS:
-            if forwardedFormattedTime == alert["time"]:
-                print("HERE______HERE______")
-                alertLabel.config(text=alert["alert"])
+            if (minutes == alert["minute"]) and (
+                (seconds <= alert["second"])
+                and (seconds >= alert["second"] - WARNING_TIME)
+            ):
+                multipleNewLine = ""
+                if alertLabel.cget("text") != "":
+                    multipleNewLine = alertLabel.cget("text") + "\n"
+                secondsToAlert = alert["second"] - seconds
+                alertLabel.config(
+                    text=f'{multipleNewLine}{alert["message"]} in {alert["minute"] - minutes}:{secondsToAlert <= 9 and "0"+str(secondsToAlert) or secondsToAlert}'
+                )
                 break
-            elif formattedTime == alert["time"]:
-                print("FINISHED______FINISHED______")
+            else:
                 alertLabel.config(text="")
                 break
 
