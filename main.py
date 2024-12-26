@@ -120,9 +120,9 @@ class OverlayApp:
         timeLabel.config(text=currentFormattedTime)
 
         for alert in TIME_ALERTS:
-            if (minutes == alert["minute"]) and (
-                (seconds <= alert["second"])
-                and (seconds >= alert["second"] - WARNING_TIME)
+            alertPlainTime = alert["minute"] * 60 + alert["second"]
+            if (self.timer <= alertPlainTime) and (
+                self.timer >= alertPlainTime - WARNING_TIME
             ):
                 multipleNewLine = ""
                 if alertLabel.cget("text") != "":
