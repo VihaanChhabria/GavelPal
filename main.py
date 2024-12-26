@@ -107,15 +107,17 @@ class OverlayApp:
         self.root.after(1000, self.run_timer, timeLabel, alertLabel, stopButton)
 
     def run_timer(self, timeLabel, alertLabel, stopButton):
+        def format_time(minutes, seconds):
+            return f"{minutes}:{seconds <= 9 and '0'+str(seconds) or seconds}"
 
         alertLabel.config(text="")
 
         self.timer = self.timer + 1
         minutes = self.timer // 60
         seconds = self.timer % 60
-        formattedTime = f"{minutes}:{seconds <= 9 and '0'+str(seconds) or seconds}"
+        currentFormattedTime = format_time(minutes, seconds)
 
-        timeLabel.config(text=formattedTime)
+        timeLabel.config(text=currentFormattedTime)
 
         for alert in TIME_ALERTS:
             if (minutes == alert["minute"]) and (
@@ -127,7 +129,7 @@ class OverlayApp:
                     multipleNewLine = alertLabel.cget("text") + "\n"
                 secondsToAlert = alert["second"] - seconds
                 alertLabel.config(
-                    text=f'{multipleNewLine}{alert["message"]} in {alert["minute"] - minutes}:{secondsToAlert <= 9 and "0"+str(secondsToAlert) or secondsToAlert}'
+                    text=f'{multipleNewLine}{alert["message"]} in {format_time(alert["minute"] - minutes, secondsToAlert)}'
                 )
                 break
             else:
