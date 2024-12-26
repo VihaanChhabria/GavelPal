@@ -40,8 +40,8 @@ class TimerPage:
         alertLabel = tk.Label(
             timerPage,
             text="",
-            fg="#ECF0F1",
-            font=("Bahnschrift", 20, "normal"),
+            fg="#E65F5C",
+            font=("Bahnschrift", 20, "bold"),
             bg="#2C3E50",
             wraplength=self.WINDOW_GEOMETRY["width"] - 60,
         )
