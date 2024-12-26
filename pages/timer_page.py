@@ -23,6 +23,8 @@ class TimerPage:
         self.timerStatus = False
 
     def init_timer_page(self):
+        self.timer = 0
+
         timerPage = tk.Frame(self.root, bg="#2C3E50")
         timerPage.pack(fill="both", expand=True)
 
