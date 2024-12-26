@@ -95,7 +95,8 @@ class OverlayApp:
             bg="#2C3E50",
             wraplength=WINDOW_WIDTH - 60,
         )
-        alertLabel.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        alertLabel.place(x=150, y=200, anchor=tk.CENTER)
+        # alertLabel.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 
         stopButton = tk.Button(
             timerPage,
