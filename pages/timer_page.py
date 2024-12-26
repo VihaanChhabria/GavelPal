@@ -9,7 +9,8 @@ TIME_ALERTS = [
     {"minute": 3, "second": 0, "message": "Stand Up and Gavel Down"},
     {"minute": 3, "second": 10, "message": "Verbal Cutoff"},
 ]
-WARNING_TIME = 10
+WARNING_TIME = 15
+END_TIME = {"minute": 3, "second": 10}
 
 
 class TimerPage:
@@ -81,7 +82,9 @@ class TimerPage:
                 )
                 alertLabel.config(text=nonExpiredMessage)
 
-        if self.timerStatus == False:
+        if (self.timerStatus == False) and (
+            self.timer < (END_TIME["minute"] * 60 + END_TIME["second"])
+        ):
             self.root.after(1000, self.run_timer, timeLabel, alertLabel, stopButton)
         else:
             self.timerStatus = False
