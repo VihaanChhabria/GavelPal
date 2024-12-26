@@ -124,17 +124,15 @@ class OverlayApp:
             if (self.timer <= alertPlainTime) and (
                 self.timer >= alertPlainTime - WARNING_TIME
             ):
-                multipleNewLine = ""
-                if alertLabel.cget("text") != "":
-                    multipleNewLine = alertLabel.cget("text") + "\n"
                 secondsToAlert = alert["second"] - seconds
                 alertLabel.config(
-                    text=f'{multipleNewLine}{alert["message"]} in {format_time(alert["minute"] - minutes, secondsToAlert)}'
+                    text=f'{alertLabel.cget("text")}{alert["message"]} in {format_time(alert["minute"] - minutes, secondsToAlert)}\n'
                 )
-                break
             else:
-                alertLabel.config(text="")
-                break
+                nonExpiredMessage = alertLabel.cget("text").replace(
+                    f'{alert["message"]} in 0:00\n', ""
+                )
+                alertLabel.config(text=nonExpiredMessage)
 
         if self.timerStatus == False:
             self.root.after(1000, self.run_timer, timeLabel, alertLabel, stopButton)
