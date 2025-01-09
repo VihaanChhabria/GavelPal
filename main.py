@@ -3,6 +3,7 @@ import sys
 
 from pages.home_page import HomePage
 from pages.timer_page import TimerPage
+from pages.settings_page import SettingsPage
 
 WINDOW_GEOMETRY = {
     "width": 300,
@@ -19,8 +20,10 @@ class App:
 
         self.home_page = HomePage(self.root)
         self.timer_page = TimerPage(self.root, WINDOW_GEOMETRY)
+        self.settings_page = SettingsPage(self.root)
 
         self.home_page.init_timer_page = self.timer_page.init_timer_page
+        self.home_page.init_settings_page = self.settings_page.init_settings_page
         self.timer_page.init_home_page = self.home_page.init_home_page
 
         self.home_page.init_home_page()
