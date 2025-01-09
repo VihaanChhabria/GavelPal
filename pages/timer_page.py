@@ -47,10 +47,23 @@ class TimerPage:
         )
         alertLabel.place(x=150, y=200, anchor=tk.CENTER)
 
+        returnButton = tk.Button(
+            timerPage,
+            text="Return to Home",
+            command=lambda: (
+                clear_all_widgets(self),
+                self.init_home_page(),
+            ),
+        )
+
         stopButton = tk.Button(
             timerPage,
             text="Stop Timer",
-            command=lambda: setattr(self, "timerStatus", True),
+            command=lambda: (
+                setattr(self, "timerStatus", True),
+                stopButton.pack_forget(),
+                returnButton.pack(),
+            ),
         )
         stopButton.pack()
 
@@ -90,5 +103,3 @@ class TimerPage:
             self.root.after(1000, self.run_timer, timeLabel, alertLabel, stopButton)
         else:
             self.timerStatus = False
-            clear_all_widgets(self)
-            self.init_home_page()
