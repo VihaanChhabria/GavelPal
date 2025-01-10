@@ -58,3 +58,12 @@ class HomePage:
             font=("Bahnschrift", 10, "normal"),
         )
         exitButton.pack()
+
+        creditsLabel = tk.Label(
+            startPage,
+            text="Made by Vihaan Chhabria",
+            fg="#ECF0F1",
+            font=("Bahnschrift", 10, "normal"),
+            bg="#2C3E50",
+        )
+        creditsLabel.pack()
